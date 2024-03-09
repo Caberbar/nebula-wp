@@ -4,7 +4,7 @@
  * Plugin Name
  *
  * @package           My messenger package
- * @author            Carlos Hernández Palma
+ * @author            Carlos Bernal Barrionuevo
  * @copyright         2024 Carlos
  * @license           GPL-2.0-or-later
  *
@@ -15,8 +15,8 @@
  * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
- * Author:            Carlos Hernández Palma
- * Author URI:        https://carlosh.caberbar.com
+ * Author:            Carlos Bernal Barrionuevo
+ * Author URI:        https://caberbar.com
  * Text Domain:       plugin-slug
  * License:           GPL v2 or later
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
