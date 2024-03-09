@@ -1,0 +1,257 @@
+  <div class="grid">   
+              <!-- begin card -->
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Last Entries</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                          
+                            $args = array(
+                                'type' => 'postbypost', //Esto te muestra el nombre los posts - Retrive the posts title
+                                'limit' => 20, //Limitamos el número de posts que mostraremos - Only last 20 posts published 
+                            );
+                          
+                            wp_get_archives($args);
+                          
+                          ?>
+                      </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <!-- end card card -->
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Projects</h3>
+                  </div>
+                  <div class="card-body">
+                      
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Tag List</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                            echo get_tag_list(20);
+                          ?>
+                      </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Category List</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                      $categorias = wp_list_categories('title_li=&show_count=1&echo=0'); 
+                      $categorias = preg_replace('/<\/a> \(([0-9]+)\)/', ' <span class="mybadge pull-right">\\1</span></a>', $categorias);
+                      echo '<span class="enlaceLista">'.$categorias.'</span>';
+                    ?> <!-- Devulve un li por cada categoria por eso necesitamos un ul-->
+                  </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Authors</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                            $args = array(
+                                'optioncount' => 1, //Visualiza el numero de post que ha escrito este autor
+                                'echo' => 0, //Nos devuelve la lista de autores en lugar de visualizarla
+                                'hide_empty' => false, //Hace que se visualice también los autores sin post publicados
+                                'orderby' => 'post_count', //Ordena los autores según el número de post publicados (Esta en orden ascendente)
+                                'order' => 'DESC', //En orden de mayor número de posts publicados a menor número de posts publicados
+                            );
+                            
+                            $authors = wp_list_authors($args); 
+                            $authors = preg_replace('/<\/a> \(([0-9]+)\)/', ' <span class="mybadge  pull-right">\\1</span></a>', $authors);
+                            echo $authors;
+                          ?>
+                      </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              
+              
+              <?php
+              
+                //Authors loop
+                //We need name and ID of each author
+                
+                $args = array('displa_name','ID',);
+                
+                $authors = get_users($args); //Retrieve an authors objects collection with display_name and ID properties
+                
+                foreach($authors as $author){
+                    
+                
+              
+              ?>
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title"><?php echo $author-> display_name ?> Posts</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                            $args = array(
+                                'posts_per_page' => 20, 
+                                'author' => $author -> ID,
+                            );
+                            
+                            $posts_by_author = get_posts($args);
+                            if(empty($posts_by_author)){
+                                echo '<h5>No posts visited ...</h5>';
+                            }else{
+                                foreach($posts_by_author as $post){
+                                    echo '<li><a href="'.get_permalink( $post -> ID).'">'.$post->post_title.'<span class="badge pull-right">'.$post -> numvisits.'</span></a></li>';
+                                }
+                            }
+                            
+                          ?>
+                      </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <?php
+                }
+              ?>
+              
+              
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Daily Posts</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                            $args = array(
+                                'type' => 'daily', //dated with posts published
+                                'show_post_count' => true, //Show number of posts published
+                                'limit' => 20, //20 dated tops
+                                'echo' => false,
+                            );
+                            
+                            $daily = wp_get_archives($args); 
+                            $daily = preg_replace('/<\/a> \(([0-9]+)\)/', ' <span class="mybadge  pull-right">\\1</span></a>', $daily);
+                            echo $daily;
+                          ?>
+                      </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Monthly Posts</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                            $args = array(
+                                'type' => 'monthly', //dated with posts published
+                                'show_post_count' => true, //Show number of posts published
+                                'limit' => 20, //20 dated tops
+                                'echo' => false,
+                            );
+                            
+                            $daily = wp_get_archives($args); 
+                            $daily = preg_replace('/<\/a> \(([0-9]+)\)/', ' <span class="mybadge  pull-right">\\1</span></a>', $daily);
+                            echo $daily;
+                          ?>
+                      </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Yearly Posts</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                            $args = array(
+                                'type' => 'yearly', //dated with posts published
+                                'show_post_count' => true, //Show number of posts published
+                                'limit' => 20, //20 dated tops
+                                'echo' => false,
+                            );
+                            
+                            $daily = wp_get_archives($args); 
+                            $daily = preg_replace('/<\/a> \(([0-9]+)\)/', ' <span class="mybadge  pull-right">\\1</span></a>', $daily);
+                            echo $daily;
+                          ?>
+                      </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Most popular posts</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries">
+                          <?php 
+                            $args = array(
+                                'posts_per_page' => 20, 
+                                'meta_key' => 'numvisits', //filter by numvisits metadata
+                                'orderby' => 'meta_value_num', //Order by numvisits numeric value
+                                'order' => 'DESC',
+                            );
+                            
+                            $popular = get_posts($args);
+                            if(empty($popular)){
+                                echo '<h5>No posts visited ...</h5>';
+                            }else{
+                                foreach($popular as $post){
+                                    echo '<li><a href="'.get_permalink( $post -> ID).'">'.$post->post_title.'<span class="badge pull-right">'.$post -> numvisits.'</span></a></li>';
+                                }
+                            }
+                            
+                          ?>
+                      </ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+              <div class="grid-item sizer card">    
+                  <div class="card-header">
+                      <h3 class="card-title">Mosts commented posts</h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="last-entries"></ul>
+                  </div>
+                  <div class="card-footer">
+                      
+                  </div>
+              </div>
+            </div>   
+        </section>

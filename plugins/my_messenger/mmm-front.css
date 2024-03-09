@@ -1,0 +1,25 @@
+.motd-box {
+    border: 1px solid black;
+
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message-pic{
+    flex: 1;
+    height: 100% !important;
+    background-size: cover;
+    background-position: center center;
+}
+
+.message-content{
+    flex: 2;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
